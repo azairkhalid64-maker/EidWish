@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Mubarak | Islamic Tool</title>
+    <style>
+        :root {
+            --primary: #ff9f43;
+            --secondary: #ff6b6b;
+            --bg-dark: #0f0c29;
+            --bg-mid: #302b63;
+            --bg-light: #24243e;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid), var(--bg-light));
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* Background Elements */
+        #bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .app-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: #ccc;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 159, 67, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Output Box */
+        #output-container {
+            margin-top: 1.5rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #output {
+            font-style: italic;
+            line-height: 1.6;
+            color: #f0f0f0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            z-index: 10;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gift {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        @keyframes floatEffect {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-20vh) rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .app-card { padding: 1.5rem; border-radius: 16px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="bg-container"></div>
+
+<main class="app-card">
+    <h1>🌙 Eid Mubarak</h1>
+    <p class="subtitle">From Azair Khalid</p>
+
+    <div id="step1" class="step">
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Your Name..." autocomplete="off">
+        </div>
+        <button onclick="handleNext()">Enter Your Name</button>
+    </div>
+
+    <div id="step2" class="step" style="display:none;">
+        <button onclick="showWish()">✨ Generate Eid Wish</button>
+    </div>
+
+    <div id="step3" class="step" style="display:none;">
+        <button onclick="showAdvice()">💡 Spiritual Advice</button>
+    </div>
+
+    <div id="step4" class="step" style="display:none;">
+        <button onclick="showCaption()">📸 Social Caption</button>
+    </div>
+
+    <div id="output-container">
+        <p id="output">Welcome! Enter Your Name To Get Your Eid Surprice! </p>
+    </div>
+</main>
+
+<footer>© 2026 Developed by Azair Khalid</footer>
+
+<script>
+    let userName = "Friend";
+    const outputText = document.getElementById("output");
+
+    function updateUI(currentStepId, nextStepId, message) {
+        document.getElementById(currentStepId).style.display = "none";
+        const nextStep = document.getElementById(nextStepId);
+        if (nextStep) {
+            nextStep.style.display = "block";
+            nextStep.style.animation = "fadeIn 0.5s ease";
+        }
+        outputText.innerHTML = message;
+    }
+
+    function handleNext() {
+        const input = document.getElementById("username").value.trim();
+        userName = input || "Friend";
+        updateUI('step1', 'step2', `Assalamu Alaikum <b>${userName}</b>! Let's celebrate this Eid together.`);
+    }
+
+    function showWish() {
+        const wishes = [
+            `Eid Mubarak ${userName}! 🌙 May this beautiful day bring peace, happiness, and blessings to you and your family`,
+            `Eid Mubarak ${userName}, Wishing you a peaceful and blessed Eid filled with joy and meaningful moments.`,
+        ];
+        const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+        updateUI('step2', 'step3', randomWish);
+    }
+
+    function showAdvice() {
+        const advices = [
+            `Tip: Keep the spirit of Ramadan alive by maintaining your prayers and helping those in need throughout the year.`,
+            `Don't forget to perform the Eid prayer and share a sweet meal with your family!`
+        ];
+        const randomAdvice = advices[Math.floor(Math.random() * advices.length)];
+        updateUI('step3', 'step4', randomAdvice);
+    }
+
+    function showCaption() {
+        const captions = [
+            `May this Eid bring you closer to Allah and fill your life with peace, success, and endless barakah 🌙✨ #IslamicEid`,
+            `May your faith grow stronger, your heart stay pure, and your life be filled with Allah’s blessings this Eid 🤲✨`
+        ];
+        const randomCaption = captions[Math.floor(Math.random() * captions.length)];
+        updateUI('step4', null, `<b>Copy your caption:</b><br>${randomCaption}`);
+    }
+
+    // Dynamic Background Elements
+    const bgContainer = document.getElementById('bg-container');
+
+    function createFloatingElement(type) {
+        const element = document.createElement('div');
+        const size = Math.random() * (type === 'star' ? 4 : 40) + 5;
+        
+        element.style.left = Math.random() * 100 + 'vw';
+        element.style.width = size + 'px';
+        element.style.height = size + 'px';
+        element.style.position = 'absolute';
+        element.style.borderRadius = '50%';
+        element.style.background = type === 'star' ? '#FFF' : 'rgba(255, 159, 67, 0.3)';
+        element.style.animation = `floatEffect ${Math.random() * 5 + 5}s linear infinite`;
+        
+        bgContainer.appendChild(element);
+        setTimeout(() => element.remove(), 10000);
+    }
+
+    setInterval(() => createFloatingElement('star'), 400);
+    setInterval(() => createFloatingElement('gift'), 1500);
+
+</script>
+</body>
+</html>
